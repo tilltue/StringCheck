@@ -1,10 +1,42 @@
 #!/usr/bin/python
+
+import sys
+from openpyxl import Workbook
+from openpyxl import load_workbook
+
 class StringCheck:
     
     __name = None
+    _androidStringArr = []
+    _iosStringArr = []
+    #wb = Workbook()
+    #ws = wb.active
+    #ws['A1'] = 42
+    #ws.append([1,2,3])
+    #import datetime
+    #ws['A2'] = datetime.datetime.now()
+    #wb.save("sample.xlsx")
     
-    def loadString(self):
-        print "meow"
+    #print(sheetTap_android['C1'].value)
+    
+    def makeArr(self, wb, tapname, array):
+        print "make arr"
+        sheetTap_android = wb[tapname]
+        rowCount = 0;
+        for row in sheetTap_android.rows:
+            array.append([])
+            for cell in row:
+                if cell.value != None:
+                    array[rowCount].append(cell.value);
+            rowCount+=1
+        print len(array)
+    
+    def loadString(self, filePath):
+        print filePath
+        _wb = load_workbook(filename = filePath, read_only=True)
+        self.makeArr(_wb,'Android-New',self._androidStringArr)
+        self.makeArr(_wb,'iOS-New',self._iosStringArr)
+        print "loadString"
     
     def set_name(self, name):
         self.__name = name
@@ -22,8 +54,10 @@ class StringCheck:
 
 if __name__ == "__main__":
     _stringCheck = StringCheck()
-    _stringCheck.loadString()
+    #_stringCheck.loadString()
     _stringCheck.set_name("charly")
     _stringCheck.print_family("jack", "cathy", 4)
-    print c.name()
-    print c.is_asleep()
+    print _stringCheck.name()
+    print _stringCheck.is_asleep()
+
+

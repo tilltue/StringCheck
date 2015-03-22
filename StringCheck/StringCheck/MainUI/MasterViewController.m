@@ -8,10 +8,13 @@
 
 #import "MasterViewController.h"
 #import <Python/Python.h>
+#import "MDDragDropView.h"
 
-@interface MasterViewController ()
+@interface MasterViewController () <DropDelegate>
 {
-    PyObject *cat;
+    PyObject *_stringCheck;
+    IBOutlet MDDragDropView *_dragAndDropView;
+    IBOutlet NSImageView *_imageView;
 }
 @end
 
@@ -20,6 +23,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _dragAndDropView.dropdelegate = self;
+    
     Py_Initialize();
     
     PyObject *sysModule = PyImport_ImportModule("sys");
@@ -31,35 +37,46 @@
     
     Py_DECREF(sysModule); // borrowed reference
     
-    /* import and instantiate Cat */
-    PyObject *CatModule = PyImport_ImportModule("Cat");	// from Cat import *
+    PyObject *StringModule = PyImport_ImportModule("StringCheck");
     
-    PyObject *Cat = PyDict_GetItemString(PyModule_GetDict(CatModule), "Cat");
-    cat = PyObject_CallObject(Cat, NULL); // c = Cat()
+    PyObject *StringCheck = PyDict_GetItemString(PyModule_GetDict(StringModule), "StringCheck");
+    _stringCheck = PyObject_CallObject(StringCheck, NULL);
     
-    Py_DECREF(CatModule);
-    Py_DECREF(Cat);
-//    [self test];
-    [self performSelector:@selector(test) withObject:nil afterDelay:3];
+    Py_DECREF(StringModule);
+    Py_DECREF(StringCheck);
+    //[self performSelector:@selector(test) withObject:nil afterDelay:.1];
 }
 
 - (void)test
 {
-    /* use Cat instance methods */
+    PyObject_CallMethod(_stringCheck,"loadString",NULL);
+    PyObject_CallMethod(_stringCheck,"set_name", "(s)", "charly"); // c.set_name("charly")
+    PyObject_CallMethod(_stringCheck,"print_family", "(ssi)", "jack", "cathy", 4); // c.print_family("jack", "cathy", 4)
     
-    PyObject_CallMethod(cat,"scream",NULL); // c.scream()
-    PyObject_CallMethod(cat,"set_name", "(s)", "charly"); // c.set_name("charly")
-    PyObject_CallMethod(cat,"print_family", "(ssi)", "jack", "cathy", 4); // c.print_family("jack", "cathy", 4)
-    
-    PyObject *is_asleep = PyObject_CallMethod(cat,"is_asleep",NULL); // c.is_asleep()
+    PyObject *is_asleep = PyObject_CallMethod(_stringCheck,"is_asleep",NULL); // c.is_asleep()
     BOOL isAsleep = (Py_True == is_asleep);
     Py_DECREF(is_asleep);
     NSLog(@"%d", isAsleep);
     
-    PyObject *name = PyObject_CallMethod(cat,"name",NULL); // c.name()
+    PyObject *name = PyObject_CallMethod(_stringCheck,"name",NULL); // c.name()
     NSString *catName = [NSString stringWithCString:PyString_AsString(name) encoding:NSASCIIStringEncoding];
     Py_DECREF(name);
     NSLog(@"%@", catName);
+}
+
+- (void)parseData:(NSURL *)fileURL
+{
+    PyObject_CallMethod(_stringCheck,"loadString", "(s)",[[fileURL path] UTF8String]);
+}
+
+- (NSImage *)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
+{
+    NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
+    if(!image) {
+        if(outError) *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
+        return nil;
+    }
+    return image;
 }
 //
 //- (IBAction)action:(id)sender
