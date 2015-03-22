@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6254" systemVersion="14C1510" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6254"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MasterViewController">
+            <connections>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="1000" height="800"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <button translatesAutoresizingMaskIntoConstraints="NO" id="Fq7-8s-jIc">
+                    <rect key="frame" x="905" y="756" width="77" height="26"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="22" id="o7K-ri-Ok5"/>
+                        <constraint firstAttribute="width" constant="73" id="tum-Lf-cyi"/>
+                    </constraints>
+                    <buttonCell key="cell" type="check" title="중복 체크" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="XGE-vN-h3N">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                </button>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Fq7-8s-jIc" secondAttribute="trailing" constant="20" id="FL1-gl-79g"/>
+                <constraint firstItem="Fq7-8s-jIc" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Sha-WN-Gd6"/>
+            </constraints>
+            <point key="canvasLocation" x="590" y="440"/>
+        </customView>
+    </objects>
+</document>
