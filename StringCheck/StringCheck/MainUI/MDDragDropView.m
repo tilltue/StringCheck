@@ -57,7 +57,7 @@
     if ( [[pboard types] containsObject:NSURLPboardType] )
     {
         NSURL *fileURL = [NSURL URLFromPasteboard:pboard];
-        [self.dropdelegate parseData:fileURL];
+        [self.dropdelegate parseData:self withUrl:fileURL];
     }
     return YES;
 }

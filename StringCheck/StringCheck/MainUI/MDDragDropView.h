@@ -8,8 +8,10 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class MDDragDropView;
+
 @protocol DropDelegate <NSObject>
--(void)parseData:(NSURL *)fileURL;
+-(void)parseData:(MDDragDropView *)dragView withUrl:(NSURL *)fileURL;
 @end
 
 @interface MDDragDropView : NSView

@@ -13,8 +13,11 @@
 @interface MasterViewController () <DropDelegate>
 {
     PyObject *_stringCheck;
-    IBOutlet MDDragDropView *_dragAndDropView;
+    IBOutlet MDDragDropView *_dragAndDropViewAppStringPath;
+    IBOutlet MDDragDropView *_dragAndDropViewLoStringPath;
     IBOutlet NSImageView *_imageView;
+    IBOutlet NSTextField *_textFiledAppStringPath;
+    IBOutlet NSTextField *_textFiledLoStringPath;
 }
 @end
 
@@ -24,7 +27,8 @@
 {
     [super viewDidLoad];
     
-    _dragAndDropView.dropdelegate = self;
+    _dragAndDropViewAppStringPath.dropdelegate = self;
+    _dragAndDropViewLoStringPath.dropdelegate = self;
     
     Py_Initialize();
     
@@ -45,6 +49,26 @@
     Py_DECREF(StringModule);
     Py_DECREF(StringCheck);
     //[self performSelector:@selector(test) withObject:nil afterDelay:.1];
+    NSString *path = [self getPath:@"appStringPath"];
+    if( path != nil ){
+        [self performSelector:@selector(stringLoad:) withObject:path afterDelay:0.1];
+        _textFiledAppStringPath.stringValue = path;
+    }
+    path = [self getPath:@"localStringPath"];
+    if( path != nil ){
+        [self performSelector:@selector(localStringLoad:) withObject:path afterDelay:0.1];
+        _textFiledLoStringPath.stringValue = path;
+    }
+}
+
+- (void)stringLoad:(NSString *)path
+{
+    PyObject_CallMethod(_stringCheck,"loadString", "(s)",[path UTF8String]);
+}
+
+- (void)localStringLoad:(NSString *)path
+{
+    PyObject_CallMethod(_stringCheck,"loadLocalString", "(s)",[path UTF8String]);
 }
 
 - (void)test
@@ -64,19 +88,29 @@
     NSLog(@"%@", catName);
 }
 
-- (void)parseData:(NSURL *)fileURL
+- (void)parseData:(MDDragDropView *)dragView withUrl:(NSURL *)fileURL
 {
-    PyObject_CallMethod(_stringCheck,"loadString", "(s)",[[fileURL path] UTF8String]);
+    if( dragView == _dragAndDropViewAppStringPath ){
+        [self savePath:[fileURL path] forKey:@"appStringPath"];
+        _textFiledAppStringPath.stringValue = [fileURL path];
+        [self performSelector:@selector(stringLoad:) withObject:[fileURL path] afterDelay:0.1];
+    }else if( dragView == _dragAndDropViewLoStringPath ){
+        [self savePath:[fileURL path] forKey:@"localStringPath"];
+        _textFiledLoStringPath.stringValue = [fileURL path];
+        [self performSelector:@selector(localStringLoad:) withObject:[fileURL path] afterDelay:0.1];
+//        PyObject_CallMethod(_stringCheck,"loadString", "(s)",[[fileURL path] UTF8String]);
+    }
 }
 
-- (NSImage *)readFromURL:(NSURL *)url ofType:(NSString *)typeName error:(NSError **)outError
+- (void)savePath:(NSString *)path forKey:(NSString *)key
 {
-    NSImage *image = [[NSImage alloc] initWithContentsOfURL:url];
-    if(!image) {
-        if(outError) *outError = [NSError errorWithDomain:NSOSStatusErrorDomain code:unimpErr userInfo:NULL];
-        return nil;
-    }
-    return image;
+    [[NSUserDefaults standardUserDefaults] setObject:path forKey:key];
+}
+
+- (NSString *)getPath:(NSString *)key
+{
+    NSString *ret = [[NSUserDefaults standardUserDefaults] stringForKey:key];
+    return ret;
 }
 //
 //- (IBAction)action:(id)sender

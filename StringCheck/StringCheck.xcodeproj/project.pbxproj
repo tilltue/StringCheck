@@ -51,6 +51,7 @@
 		224070201ABEC74000039F9A /* StringCheck.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = StringCheck.py; sourceTree = "<group>"; };
 		224070231ABEE34600039F9A /* MDDragDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MDDragDropView.h; path = MainUI/MDDragDropView.h; sourceTree = "<group>"; };
 		224070241ABEE34600039F9A /* MDDragDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MDDragDropView.m; path = MainUI/MDDragDropView.m; sourceTree = "<group>"; };
+		A34C7C0D1AC994A70085BC66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = StringCheck/Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +76,7 @@
 		22406FE51ABEC61A00039F9A = {
 			isa = PBXGroup;
 			children = (
+				A34C7C0C1AC994A70085BC66 /* MainMenu.xib */,
 				2240701A1ABEC67C00039F9A /* Python.framework */,
 				22406FF01ABEC61A00039F9A /* StringCheck */,
 				224070071ABEC61A00039F9A /* StringCheckTests */,
@@ -290,6 +292,14 @@
 			name = MainMenu.xib;
 			sourceTree = "<group>";
 		};
+		A34C7C0C1AC994A70085BC66 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A34C7C0D1AC994A70085BC66 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -446,6 +456,7 @@
 				224070101ABEC61A00039F9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		224070111ABEC61A00039F9A /* Build configuration list for PBXNativeTarget "StringCheckTests" */ = {
 			isa = XCConfigurationList;
@@ -454,6 +465,7 @@
 				224070131ABEC61A00039F9A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
