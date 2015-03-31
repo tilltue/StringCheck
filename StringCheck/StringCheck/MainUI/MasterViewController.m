@@ -18,6 +18,12 @@
     IBOutlet NSImageView *_imageView;
     IBOutlet NSTextField *_textFiledAppStringPath;
     IBOutlet NSTextField *_textFiledLoStringPath;
+    
+    IBOutlet NSTextField *_classTextField;
+    IBOutlet NSTextField *_keywordTextField;
+    IBOutlet NSTextField *_valueTextField;
+    IBOutlet NSTextField *_gskeywordTextField;
+    IBOutlet NSButton *_submitButton;
 }
 @end
 
@@ -61,6 +67,8 @@
     }
 }
 
+#pragma mark - Python binding
+
 - (void)stringLoad:(NSString *)path
 {
     PyObject_CallMethod(_stringCheck,"loadString", "(s)",[path UTF8String]);
@@ -69,6 +77,62 @@
 - (void)localStringLoad:(NSString *)path
 {
     PyObject_CallMethod(_stringCheck,"loadLocalString", "(s)",[path UTF8String]);
+}
+
+#pragma mark - Dragview delegate
+
+- (void)parseData:(MDDragDropView *)dragView withUrl:(NSURL *)fileURL
+{
+    if( dragView == _dragAndDropViewAppStringPath ){
+        [self savePath:[fileURL path] forKey:@"appStringPath"];
+        _textFiledAppStringPath.stringValue = [fileURL path];
+        [self performSelector:@selector(stringLoad:) withObject:[fileURL path] afterDelay:0.1];
+    }else if( dragView == _dragAndDropViewLoStringPath ){
+        [self savePath:[fileURL path] forKey:@"localStringPath"];
+        _textFiledLoStringPath.stringValue = [fileURL path];
+        [self performSelector:@selector(localStringLoad:) withObject:[fileURL path] afterDelay:0.1];
+//        PyObject_CallMethod(_stringCheck,"loadString", "(s)",[[fileURL path] UTF8String]);
+    }
+}
+
+#pragma mark  - Save userdefault setting
+
+- (void)savePath:(NSString *)path forKey:(NSString *)key
+{
+    [[NSUserDefaults standardUserDefaults] setObject:path forKey:key];
+}
+
+- (NSString *)getPath:(NSString *)key
+{
+    NSString *ret = [[NSUserDefaults standardUserDefaults] stringForKey:key];
+    return ret;
+}
+
+#pragma mark - UI Action
+
+- (NSArray *)duplicationCheck:(NSString *)value
+{
+    PyObject *object = PyObject_CallMethod(_stringCheck,"duplicationCheck", "(s)",[value UTF8String]);
+    Py_ssize_t len = PyList_Size(object);
+    NSMutableArray *list = [NSMutableArray new];
+    Py_ssize_t i = 0;
+    for (i = 0; i < len; i++) {
+        PyObject *objcObject = PyList_GetItem(object, (Py_ssize_t)i);
+        if (objcObject != nil) {
+            NSString *string = [NSString stringWithCString:PyString_AsString(objcObject) encoding:NSASCIIStringEncoding];
+            [list addObject:string];
+        }
+    }
+    return list;
+}
+
+- (IBAction)submitButton:(id)sender
+{
+    NSLog(@"%@",_valueTextField.stringValue);
+    if( _valueTextField.stringValue.length > 0 ){
+        NSArray *duplicateList = [self duplicationCheck:_valueTextField.stringValue];
+        NSLog(@"%@",duplicateList);
+    }
 }
 
 - (void)test
@@ -88,30 +152,6 @@
     NSLog(@"%@", catName);
 }
 
-- (void)parseData:(MDDragDropView *)dragView withUrl:(NSURL *)fileURL
-{
-    if( dragView == _dragAndDropViewAppStringPath ){
-        [self savePath:[fileURL path] forKey:@"appStringPath"];
-        _textFiledAppStringPath.stringValue = [fileURL path];
-        [self performSelector:@selector(stringLoad:) withObject:[fileURL path] afterDelay:0.1];
-    }else if( dragView == _dragAndDropViewLoStringPath ){
-        [self savePath:[fileURL path] forKey:@"localStringPath"];
-        _textFiledLoStringPath.stringValue = [fileURL path];
-        [self performSelector:@selector(localStringLoad:) withObject:[fileURL path] afterDelay:0.1];
-//        PyObject_CallMethod(_stringCheck,"loadString", "(s)",[[fileURL path] UTF8String]);
-    }
-}
-
-- (void)savePath:(NSString *)path forKey:(NSString *)key
-{
-    [[NSUserDefaults standardUserDefaults] setObject:path forKey:key];
-}
-
-- (NSString *)getPath:(NSString *)key
-{
-    NSString *ret = [[NSUserDefaults standardUserDefaults] stringForKey:key];
-    return ret;
-}
 //
 //- (IBAction)action:(id)sender
 //{
@@ -121,5 +161,6 @@
 //    
 //    [textField setStringValue:catName];
 //}
+
 
 @end

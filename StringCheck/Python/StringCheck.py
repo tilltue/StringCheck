@@ -11,6 +11,7 @@ class StringCheck:
     _androidStringArr = []
     _iosStringArr = []
     _localizationPathArr = []
+    _localizationDictArr = []
     #wb = Workbook()
     #ws = wb.active
     #ws['A1'] = 42
@@ -40,6 +41,16 @@ class StringCheck:
         self.makeArr(_wb,'iOS-New',self._iosStringArr)
         print "loadString"
     
+    def duplicationCheck(self, value):
+        print 'check : ' + value
+        retArr = []
+        for dictionary in self._localizationDictArr:
+            for key, val in dictionary.items():
+                if val == value:
+                    retArr.append(key+':'+val)
+        #print 'len' + str(len(retArr))
+        return retArr
+    
     def set_name(self, name):
         self.__name = name
     
@@ -53,6 +64,29 @@ class StringCheck:
     
     def is_asleep(self):
         return True
+    
+    def getDictionaryInLSFile(self, filePath):
+        print "test"
+        dictionary = {}
+        f = open(filePath, 'r')
+        i = 0
+        while 1:
+            i+=1
+            line = f.readline()
+            range = line.find('=')
+            key = 'line'+str(i)
+            if range > 0:
+                keyword = line[1:range-1]
+                value = line[range+2:-3]
+                #print 'key : '+ keyword + '  val : ' + value
+                #print key+':'+keyword
+                dictionary[key+':'+keyword] = value
+            else :
+                #print key+':empty'
+                dictionary[key+':empty'] = 'empty'
+            if not line: break
+        f.close()
+        return dictionary
 
     def loadLocalString(self, filePath):
         #print filePath
@@ -63,6 +97,8 @@ class StringCheck:
                         self._localizationPathArr.append(filePath+'/'+filename+'/'+lsPath)
         for path in self._localizationPathArr:
             print path
+            dictionary = self.getDictionaryInLSFile(path)
+            self._localizationDictArr.append(dictionary)
 
 if __name__ == "__main__":
     _stringCheck = StringCheck()
