@@ -10,7 +10,27 @@
 #import <Python/Python.h>
 #import "MDDragDropView.h"
 
-@interface MasterViewController () <DropDelegate>
+@interface DuplicateObject : NSObject
+@property (nonatomic, strong) NSString *lang;
+@property (nonatomic, strong) NSString *line;
+@property (nonatomic, strong) NSString *key;
+@property (nonatomic, strong) NSString *value;
+@end
+
+@implementation DuplicateObject
+@end
+
+@interface SearchObject : NSObject
+@property (nonatomic, strong) NSString *lang;
+@property (nonatomic, strong) NSString *line;
+@property (nonatomic, strong) NSString *key;
+@property (nonatomic, strong) NSString *value;
+@end
+
+@implementation SearchObject
+@end
+
+@interface MasterViewController () <DropDelegate,NSTableViewDataSource,NSTableViewDelegate>
 {
     PyObject *_stringCheck;
     IBOutlet MDDragDropView *_dragAndDropViewAppStringPath;
@@ -24,6 +44,10 @@
     IBOutlet NSTextField *_valueTextField;
     IBOutlet NSTextField *_gskeywordTextField;
     IBOutlet NSButton *_submitButton;
+    
+    IBOutlet NSTableView *_resultTable;
+    
+    NSMutableArray *_resultArr;
 }
 @end
 
@@ -32,6 +56,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _resultArr = [NSMutableArray new];
     
     _dragAndDropViewAppStringPath.dropdelegate = self;
     _dragAndDropViewLoStringPath.dropdelegate = self;
@@ -119,7 +145,23 @@
     for (i = 0; i < len; i++) {
         PyObject *objcObject = PyList_GetItem(object, (Py_ssize_t)i);
         if (objcObject != nil) {
-            NSString *string = [NSString stringWithCString:PyString_AsString(objcObject) encoding:NSASCIIStringEncoding];
+            NSString *string = [NSString stringWithCString:PyString_AsString(objcObject) encoding:NSUTF8StringEncoding];
+            [list addObject:string];
+        }
+    }
+    return list;
+}
+
+- (NSArray *)searchValue:(NSString *)value
+{
+    PyObject *object = PyObject_CallMethod(_stringCheck,"searchKey", "(s)",[value UTF8String]);
+    Py_ssize_t len = PyList_Size(object);
+    NSMutableArray *list = [NSMutableArray new];
+    Py_ssize_t i = 0;
+    for (i = 0; i < len; i++) {
+        PyObject *objcObject = PyList_GetItem(object, (Py_ssize_t)i);
+        if (objcObject != nil) {
+            NSString *string = [NSString stringWithCString:PyString_AsString(objcObject) encoding:NSUTF8StringEncoding];
             [list addObject:string];
         }
     }
@@ -130,9 +172,35 @@
 {
     NSLog(@"%@",_valueTextField.stringValue);
     if( _valueTextField.stringValue.length > 0 ){
+        [_resultArr removeAllObjects];
         NSArray *duplicateList = [self duplicationCheck:_valueTextField.stringValue];
-        NSLog(@"%@",duplicateList);
+        if( duplicateList.count > 0 ){
+            
+        }
+        NSArray *searchArr = [self searchValue:_valueTextField.stringValue];
+        if( searchArr.count > 0 ){
+            
+        }
+        [_resultTable reloadData];
     }
+}
+
+#pragma mark - NSTableView datasource & delegate
+
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
+{
+    return [_resultArr count];
+}
+
+- (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row
+{
+    BOOL isGroup= NO;
+    return isGroup;
+}
+
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    return nil;
 }
 
 - (void)test

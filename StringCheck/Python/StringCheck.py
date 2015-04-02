@@ -23,7 +23,7 @@ class StringCheck:
     #print(sheetTap_android['C1'].value)
     
     def makeArr(self, wb, tapname, array):
-        print "make arr"
+        print "make" + tapname
         sheetTap = wb[tapname]
         rowCount = 0;
         for row in sheetTap.rows:
@@ -50,6 +50,17 @@ class StringCheck:
                     retArr.append(key+':'+val)
         #print 'len' + str(len(retArr))
         return retArr
+
+    def searchKey(self, searchKey):
+        print 'search : ' + searchKey
+        retArr = []
+        for dictionary in self._localizationDictArr:
+            for key, val in dictionary.items():
+                if val.find(searchKey) > 0 :
+                    retArr.append(key+':'+val)
+        #print 'len' + str(len(retArr))
+        return retArr
+    
     
     def set_name(self, name):
         self.__name = name
@@ -66,7 +77,6 @@ class StringCheck:
         return True
     
     def getDictionaryInLSFile(self, filePath):
-        print "test"
         dictionary = {}
         f = open(filePath, 'r')
         i = 0
@@ -78,18 +88,14 @@ class StringCheck:
             if range > 0:
                 keyword = line[1:range-1]
                 value = line[range+2:-3]
-                #print 'key : '+ keyword + '  val : ' + value
-                #print key+':'+keyword
                 dictionary[key+':'+keyword] = value
             else :
-                #print key+':empty'
                 dictionary[key+':empty'] = 'empty'
             if not line: break
         f.close()
         return dictionary
 
     def loadLocalString(self, filePath):
-        #print filePath
         for filename in os.listdir(filePath):
             if filename.find('lproj') > 0 :
                 for lsPath in os.listdir(filePath+'/'+filename):
