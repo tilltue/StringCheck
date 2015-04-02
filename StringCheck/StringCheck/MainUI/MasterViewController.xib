@@ -11,7 +11,7 @@
                 <outlet property="_dragAndDropViewLoStringPath" destination="cmh-ST-cXh" id="VST-A4-ck4"/>
                 <outlet property="_gskeywordTextField" destination="Gii-ZD-rB4" id="YW3-pz-JwC"/>
                 <outlet property="_keywordTextField" destination="Fvk-aO-YrU" id="Fk8-Ii-MuG"/>
-                <outlet property="_resultTable" destination="bYh-lq-g8h" id="Mo1-4Z-DRR"/>
+                <outlet property="_resultTable" destination="bYh-lq-g8h" id="Jcy-zo-haN"/>
                 <outlet property="_submitButton" destination="tFc-9n-WF7" id="dTj-vn-q4l"/>
                 <outlet property="_textFiledAppStringPath" destination="w46-Bd-QsX" id="rUa-yn-saa"/>
                 <outlet property="_textFiledLoStringPath" destination="dhJ-Kf-P6y" id="CWZ-pX-ljw"/>
@@ -152,7 +152,7 @@
                         <rect key="frame" x="1" y="0.0" width="238" height="134"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="30" headerView="mct-jc-Fri" id="bYh-lq-g8h">
+                            <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowHeight="30" headerView="mct-jc-Fri" id="bYh-lq-g8h" customClass="CustomTable">
                                 <rect key="frame" x="0.0" y="0.0" width="143" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>

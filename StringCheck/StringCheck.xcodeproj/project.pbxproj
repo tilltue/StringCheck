@@ -19,6 +19,7 @@
 		224070211ABEC74000039F9A /* Cat.py in Resources */ = {isa = PBXBuildFile; fileRef = 2240701F1ABEC74000039F9A /* Cat.py */; };
 		224070221ABEC74000039F9A /* StringCheck.py in Resources */ = {isa = PBXBuildFile; fileRef = 224070201ABEC74000039F9A /* StringCheck.py */; };
 		224070251ABEE34600039F9A /* MDDragDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 224070241ABEE34600039F9A /* MDDragDropView.m */; };
+		A34C7C111ACD69590085BC66 /* CustomTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A34C7C101ACD69590085BC66 /* CustomTable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,8 @@
 		224070231ABEE34600039F9A /* MDDragDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MDDragDropView.h; path = MainUI/MDDragDropView.h; sourceTree = "<group>"; };
 		224070241ABEE34600039F9A /* MDDragDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MDDragDropView.m; path = MainUI/MDDragDropView.m; sourceTree = "<group>"; };
 		A34C7C0D1AC994A70085BC66 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = StringCheck/Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		A34C7C0F1ACD69590085BC66 /* CustomTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTable.h; path = MainUI/CustomTable.h; sourceTree = "<group>"; };
+		A34C7C101ACD69590085BC66 /* CustomTable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTable.m; path = MainUI/CustomTable.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +140,8 @@
 		224070191ABEC66900039F9A /* MainUI */ = {
 			isa = PBXGroup;
 			children = (
+				A34C7C0F1ACD69590085BC66 /* CustomTable.h */,
+				A34C7C101ACD69590085BC66 /* CustomTable.m */,
 				224070231ABEE34600039F9A /* MDDragDropView.h */,
 				224070241ABEE34600039F9A /* MDDragDropView.m */,
 				224070141ABEC66400039F9A /* MasterViewController.h */,
@@ -262,6 +267,7 @@
 				22406FF71ABEC61A00039F9A /* main.m in Sources */,
 				224070251ABEE34600039F9A /* MDDragDropView.m in Sources */,
 				22406FF51ABEC61A00039F9A /* AppDelegate.m in Sources */,
+				A34C7C111ACD69590085BC66 /* CustomTable.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

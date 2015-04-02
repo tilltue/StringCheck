@@ -21,7 +21,7 @@
 @implementation LStringObject
 @end
 
-@interface MasterViewController () <DropDelegate,NSTableViewDataSource,NSTableViewDelegate>
+@interface MasterViewController () <DropDelegate,NSTableViewDataSource,NSTableViewDelegate,ExtendedTableViewDelegate>
 {
     PyObject *_stringCheck;
     IBOutlet MDDragDropView *_dragAndDropViewAppStringPath;
@@ -36,7 +36,7 @@
     IBOutlet NSTextField *_gskeywordTextField;
     IBOutlet NSButton *_submitButton;
     
-    IBOutlet NSTableView *_resultTable;
+    IBOutlet CustomTable *_resultTable;
     
     NSMutableArray *_resultArr;
 }
@@ -47,6 +47,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _resultTable.extendedDelegate = self;
     
     _resultArr = [NSMutableArray new];
     
@@ -251,6 +253,22 @@
         return @"??";
     }
     return nil;
+}
+
+- (void)tableView:(NSTableView *)tableView didClickedRow:(NSInteger)row
+{
+//    NSLog(@"Click row : %ld",row);
+}
+
+- (void)tableView:(NSTableView *)tableView didDoubleClickedRow:(NSInteger)row withEvent:(NSEvent *)theEvent
+{
+    NSLog(@"Double Click row : %ld",row);
+    NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
+    [theMenu insertItemWithTitle:@"Beep" action:@selector(beep:) keyEquivalent:@"" atIndex:0];
+    [theMenu insertItemWithTitle:@"Honk" action:@selector(honk:) keyEquivalent:@"" atIndex:1];
+    
+    [NSMenu popUpContextMenu:theMenu withEvent:theEvent forView:tableView];
+
 }
 
 - (void)test

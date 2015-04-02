@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CustomTable.h"
 
 @interface MasterViewController : NSViewController
 
