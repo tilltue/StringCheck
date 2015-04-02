@@ -45,9 +45,12 @@ class StringCheck:
         print 'check : ' + value
         retArr = []
         for dictionary in self._localizationDictArr:
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
             for key, val in dictionary.items():
                 if val == value:
-                    retArr.append(key+':'+val)
+                    retArr.append(lang+'@#$'+key+'@#$'+val)
         #print 'len' + str(len(retArr))
         return retArr
 
@@ -55,9 +58,12 @@ class StringCheck:
         print 'search : ' + searchKey
         retArr = []
         for dictionary in self._localizationDictArr:
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
             for key, val in dictionary.items():
                 if val.find(searchKey) > 0 :
-                    retArr.append(key+':'+val)
+                    retArr.append(lang+'@#$'+key+'@#$'+val)
         #print 'len' + str(len(retArr))
         return retArr
     
@@ -84,7 +90,7 @@ class StringCheck:
             i+=1
             line = f.readline()
             range = line.find('=')
-            key = 'line'+str(i)
+            key = str(i)
             if range > 0:
                 keyword = line[1:range-1]
                 value = line[range+2:-3]

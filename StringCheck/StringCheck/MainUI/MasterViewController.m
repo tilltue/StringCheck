@@ -10,24 +10,15 @@
 #import <Python/Python.h>
 #import "MDDragDropView.h"
 
-@interface DuplicateObject : NSObject
+@interface LStringObject : NSObject
 @property (nonatomic, strong) NSString *lang;
 @property (nonatomic, strong) NSString *line;
+@property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *key;
 @property (nonatomic, strong) NSString *value;
 @end
 
-@implementation DuplicateObject
-@end
-
-@interface SearchObject : NSObject
-@property (nonatomic, strong) NSString *lang;
-@property (nonatomic, strong) NSString *line;
-@property (nonatomic, strong) NSString *key;
-@property (nonatomic, strong) NSString *value;
-@end
-
-@implementation SearchObject
+@implementation LStringObject
 @end
 
 @interface MasterViewController () <DropDelegate,NSTableViewDataSource,NSTableViewDelegate>
@@ -168,18 +159,56 @@
     return list;
 }
 
+- (NSArray *)parseValue:(NSString *)value
+{
+    NSArray *parseArr = [value componentsSeparatedByString:@"@#$"];
+    if( parseArr.count > 2 ){
+        NSMutableArray *retArr = [NSMutableArray new];
+        [retArr addObject:parseArr[0]];
+        NSString *second = parseArr[1];
+        [retArr addObjectsFromArray:[second componentsSeparatedByString:@":"]];
+        [retArr addObject:parseArr[2]];
+        return retArr;
+    }
+    return nil;;
+}
+
 - (IBAction)submitButton:(id)sender
 {
     NSLog(@"%@",_valueTextField.stringValue);
     if( _valueTextField.stringValue.length > 0 ){
         [_resultArr removeAllObjects];
         NSArray *duplicateList = [self duplicationCheck:_valueTextField.stringValue];
-        if( duplicateList.count > 0 ){
-            
+        if( duplicateList.count > 0 )
+           [_resultArr addObject:@"중복 문자열"];
+        for( NSString *value in duplicateList )
+        {
+            NSArray *array = [self parseValue:value];
+            if( array != nil && array.count == 5){
+                LStringObject *object = [LStringObject new];
+                object.lang = array[0];
+                object.line = array[1];
+                object.name = array[2];
+                object.key  = array[3];
+                object.value= array[4];
+                [_resultArr addObject:object];
+            }
         }
         NSArray *searchArr = [self searchValue:_valueTextField.stringValue];
-        if( searchArr.count > 0 ){
-            
+        if(  searchArr.count > 0 )
+            [_resultArr addObject:@"유사 문자열"];
+        for( NSString *value in searchArr )
+        {
+            NSArray *array = [self parseValue:value];
+            if( array != nil && array.count == 5){
+                LStringObject *object = [LStringObject new];
+                object.lang = array[0];
+                object.line = array[1];
+                object.name = array[2];
+                object.key  = array[3];
+                object.value= array[4];
+                [_resultArr addObject:object];
+            }
         }
         [_resultTable reloadData];
     }
@@ -194,12 +223,33 @@
 
 - (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row
 {
-    BOOL isGroup= NO;
-    return isGroup;
+    id Object = [_resultArr objectAtIndex:row];
+    if( [Object isKindOfClass:[NSString class]] )
+        return YES;
+    return NO;
 }
 
 - (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
 {
+    id object = [_resultArr objectAtIndex:row];
+    if( [object isKindOfClass:[NSString class]] ){
+        if( [tableColumn.identifier isEqualToString:@"value"] )
+            return object;
+        return @"";
+    }else if( [object isKindOfClass:[LStringObject class]]){
+        LStringObject *lsObject = object;
+        if( [tableColumn.identifier isEqualToString:@"lang"] )
+            return lsObject.lang;
+        if( [tableColumn.identifier isEqualToString:@"line"] )
+            return lsObject.line;
+        if( [tableColumn.identifier isEqualToString:@"name"] )
+            return lsObject.name;
+        if( [tableColumn.identifier isEqualToString:@"keyword"] )
+            return lsObject.key;
+        if( [tableColumn.identifier isEqualToString:@"value"] )
+            return lsObject.value;
+        return @"??";
+    }
     return nil;
 }
 
