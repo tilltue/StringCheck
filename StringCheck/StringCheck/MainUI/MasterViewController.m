@@ -264,8 +264,8 @@
 {
     NSLog(@"Double Click row : %ld",row);
     NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
-    [theMenu insertItemWithTitle:@"중복 문자열 생성( GS String )" action:@selector(GenerateGSString) keyEquivalent:@"" atIndex:0];
-    [theMenu insertItemWithTitle:@"Honk" action:@selector(honk:) keyEquivalent:@"" atIndex:1];
+    [theMenu insertItemWithTitle:@"문자열 복사" action:@selector(GenerateGSString) keyEquivalent:@"" atIndex:0];
+    [theMenu insertItemWithTitle:@"중복 문자열 생성( GS String )" action:@selector(GenerateGSString) keyEquivalent:@"" atIndex:1];
     
     [NSMenu popUpContextMenu:theMenu withEvent:theEvent forView:tableView];
 
