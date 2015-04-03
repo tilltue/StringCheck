@@ -260,11 +260,11 @@
 //    NSLog(@"Click row : %ld",row);
 }
 
-- (void)tableView:(NSTableView *)tableView didDoubleClickedRow:(NSInteger)row withEvent:(NSEvent *)theEvent
+- (void)tableView:(NSTableView *)tableView didRightClick:(NSInteger)row withEvent:(NSEvent *)theEvent
 {
-    NSLog(@"Double Click row : %ld",row);
+    NSLog(@"Right Click row : %ld",row);
     NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
-    [theMenu insertItemWithTitle:@"문자열 복사" action:@selector(GenerateGSString) keyEquivalent:@"" atIndex:0];
+    [theMenu insertItemWithTitle:@"문자열 복사" action:@selector(CopyString) keyEquivalent:@"" atIndex:0];
     [theMenu insertItemWithTitle:@"중복 문자열 생성( GS String )" action:@selector(GenerateGSString) keyEquivalent:@"" atIndex:1];
     
     [NSMenu popUpContextMenu:theMenu withEvent:theEvent forView:tableView];
@@ -272,6 +272,11 @@
 }
 
 #pragma mark - table context menu
+
+- (void)CopyString
+{
+    
+}
 
 - (void)GenerateGSString
 {

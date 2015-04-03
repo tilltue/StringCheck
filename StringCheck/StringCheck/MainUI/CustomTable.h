@@ -11,7 +11,7 @@
 @protocol ExtendedTableViewDelegate <NSObject>
 
 - (void)tableView:(NSTableView *)tableView didClickedRow:(NSInteger)row;
-- (void)tableView:(NSTableView *)tableView didDoubleClickedRow:(NSInteger)row withEvent:(NSEvent *)theEvent;
+- (void)tableView:(NSTableView *)tableView didRightClick:(NSInteger)row withEvent:(NSEvent *)theEvent;
 
 @end
 
