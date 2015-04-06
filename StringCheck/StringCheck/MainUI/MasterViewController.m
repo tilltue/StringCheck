@@ -16,12 +16,13 @@
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *key;
 @property (nonatomic, strong) NSString *value;
+@property (nonatomic, assign) BOOL insert;
 @end
 
 @implementation LStringObject
 @end
 
-@interface MasterViewController () <DropDelegate,NSTableViewDataSource,NSTableViewDelegate,ExtendedTableViewDelegate>
+@interface MasterViewController () <DropDelegate,NSTableViewDataSource,NSTableViewDelegate,ExtendedTableViewDelegate,NSTextFieldDelegate>
 {
     PyObject *_stringCheck;
     IBOutlet MDDragDropView *_dragAndDropViewAppStringPath;
@@ -35,8 +36,13 @@
     IBOutlet NSTextField *_valueTextField;
     IBOutlet NSTextField *_gskeywordTextField;
     IBOutlet NSButton *_submitButton;
+    IBOutlet NSButton *_nonDuplicateCheck;
+    IBOutlet NSButton *_nonSearchDuplicateCheck;
+    IBOutlet NSButton *_insertAllButton;
     
     IBOutlet CustomTable *_resultTable;
+    
+    NSInteger _clickRow;
     
     NSMutableArray *_resultArr;
 }
@@ -98,6 +104,58 @@
     PyObject_CallMethod(_stringCheck,"loadLocalString", "(s)",[path UTF8String]);
 }
 
+- (void)writeLString:(LStringObject *)object
+{
+    PyObject_CallMethod(_stringCheck,"writeLocalString", "(sssss)",[object.line UTF8String],[object.lang UTF8String],[object.name UTF8String],[object.key UTF8String],[object.value UTF8String]);
+}
+
+- (void)insertLString:(LStringObject *)object
+{
+    PyObject *pyObject = PyObject_CallMethod(_stringCheck,"insertString", "(sss)",[object.name UTF8String],[object.key UTF8String],[object.value UTF8String]);
+    if( pyObject != nil ){
+        Py_ssize_t len = PyList_Size(pyObject);
+        NSMutableArray *list = [NSMutableArray new];
+        Py_ssize_t i = 0;
+        for (i = 0; i < len; i++) {
+            PyObject *objcObject = PyList_GetItem(pyObject, (Py_ssize_t)i);
+            if (objcObject != nil) {
+                NSString *string = [NSString stringWithCString:PyString_AsString(objcObject) encoding:NSUTF8StringEncoding];
+                [list addObject:string];
+            }
+        }
+        [_resultArr removeAllObjects];
+        if(  list.count > 0 ){
+            [_resultArr addObject:@"유사 클래스의 마지막 라인"];
+            _insertAllButton.enabled = YES;
+            for( NSString *value in list )
+            {
+                NSArray *array = [self parseValue:value];
+                if( array != nil && array.count == 5){
+                    LStringObject *object = [LStringObject new];
+                    object.lang = array[0];
+                    object.line = array[1];
+                    object.name = array[2];
+                    object.key  = array[3];
+                    object.value= array[4];
+                    [_resultArr addObject:object];
+                    LStringObject *addObject = [LStringObject new];
+                    addObject.lang = @"┗";
+                    addObject.line = [NSString stringWithFormat:@"%d",[array[1] intValue] + 1];
+                    addObject.name = _classTextField.stringValue;
+                    addObject.key  = _keywordTextField.stringValue;
+                    addObject.value= _valueTextField.stringValue;
+                    addObject.insert = YES;
+                    [_resultArr addObject:addObject];
+                }
+            }
+            [_resultTable reloadData];
+        }else{
+            _insertAllButton.enabled = NO;
+        }
+        
+    }
+}
+
 #pragma mark - Dragview delegate
 
 - (void)parseData:(MDDragDropView *)dragView withUrl:(NSURL *)fileURL
@@ -132,6 +190,8 @@
 - (NSArray *)duplicationCheck:(NSString *)value
 {
     PyObject *object = PyObject_CallMethod(_stringCheck,"duplicationCheck", "(s)",[value UTF8String]);
+    if( object == nil )
+        return nil;
     Py_ssize_t len = PyList_Size(object);
     NSMutableArray *list = [NSMutableArray new];
     Py_ssize_t i = 0;
@@ -148,6 +208,8 @@
 - (NSArray *)searchValue:(NSString *)value
 {
     PyObject *object = PyObject_CallMethod(_stringCheck,"searchKey", "(s)",[value UTF8String]);
+    if( object == nil )
+        return nil;
     Py_ssize_t len = PyList_Size(object);
     NSMutableArray *list = [NSMutableArray new];
     Py_ssize_t i = 0;
@@ -177,23 +239,53 @@
 
 - (IBAction)submitButton:(id)sender
 {
+    [_nonDuplicateCheck setState:NO];
+    if( _classTextField.stringValue != nil && _keywordTextField.stringValue != nil && _valueTextField.stringValue != nil ){
+        LStringObject *object = [LStringObject new];
+        object.name = _classTextField.stringValue;
+        object.key  = _keywordTextField.stringValue;
+        object.value= _valueTextField.stringValue;
+        [self insertLString:object];
+    }
+}
+
+- (IBAction)insertAllButton:(id)sender
+{
+    if( _resultArr.count > 0 ){
+        for( id object in _resultArr ){
+            if( [object isKindOfClass:[LStringObject class]]){
+                LStringObject *lsObject = object;
+                if( lsObject.insert )
+                    [self writeLString:object];
+            }
+        }
+    }
+}
+
+- (void)
+duplicateCheck
+{
+    if (_nonDuplicateCheck.state == NO)
+        return;
     NSLog(@"%@",_valueTextField.stringValue);
     if( _valueTextField.stringValue.length > 0 ){
         [_resultArr removeAllObjects];
-        NSArray *duplicateList = [self duplicationCheck:_valueTextField.stringValue];
-        if( duplicateList.count > 0 )
-           [_resultArr addObject:@"중복 문자열"];
-        for( NSString *value in duplicateList )
-        {
-            NSArray *array = [self parseValue:value];
-            if( array != nil && array.count == 5){
-                LStringObject *object = [LStringObject new];
-                object.lang = array[0];
-                object.line = array[1];
-                object.name = array[2];
-                object.key  = array[3];
-                object.value= array[4];
-                [_resultArr addObject:object];
+        if( _nonSearchDuplicateCheck.state == NO ){
+            NSArray *duplicateList = [self duplicationCheck:_valueTextField.stringValue];
+            if( duplicateList.count > 0 )
+                [_resultArr addObject:@"중복 문자열"];
+            for( NSString *value in duplicateList )
+            {
+                NSArray *array = [self parseValue:value];
+                if( array != nil && array.count == 5){
+                    LStringObject *object = [LStringObject new];
+                    object.lang = array[0];
+                    object.line = array[1];
+                    object.name = array[2];
+                    object.key  = array[3];
+                    object.value= array[4];
+                    [_resultArr addObject:object];
+                }
             }
         }
         NSArray *searchArr = [self searchValue:_valueTextField.stringValue];
@@ -214,6 +306,15 @@
         }
         [_resultTable reloadData];
     }
+}
+
+#pragma mark - NSTextField delegate
+
+- (BOOL)control:(NSControl *)control textShouldEndEditing:(NSText *)fieldEditor;
+{
+    if( control == _valueTextField )
+        [self duplicateCheck];
+    return YES;
 }
 
 #pragma mark - NSTableView datasource & delegate
@@ -263,6 +364,7 @@
 - (void)tableView:(NSTableView *)tableView didRightClick:(NSInteger)row withEvent:(NSEvent *)theEvent
 {
     NSLog(@"Right Click row : %ld",row);
+    _clickRow = row;
     NSMenu *theMenu = [[NSMenu alloc] initWithTitle:@"Contextual Menu"];
     [theMenu insertItemWithTitle:@"문자열 복사" action:@selector(CopyString) keyEquivalent:@"" atIndex:0];
     [theMenu insertItemWithTitle:@"중복 문자열 생성( GS String )" action:@selector(GenerateGSString) keyEquivalent:@"" atIndex:1];
@@ -271,11 +373,30 @@
 
 }
 
+#pragma mark - alert
+
+- (void)showGSAlert
+{
+    NSAlert *alert = [NSAlert new];
+    alert.messageText = @"같은 문자열을 사용하는 경우\n중복 문자열을 생성해주세요.";
+    [alert runModal];
+}
+
 #pragma mark - table context menu
 
 - (void)CopyString
 {
-    
+    if( _clickRow < _resultArr.count ){
+        id object = [_resultArr objectAtIndex:_clickRow];
+        if( [object isKindOfClass:[LStringObject class]]){
+            LStringObject *lsObject = object;
+            if( [lsObject.value rangeOfString:@"@GS:"].length > 0 )
+                _valueTextField.stringValue = lsObject.value;
+            else{
+                [self showGSAlert];
+            }
+        }
+    }
 }
 
 - (void)GenerateGSString

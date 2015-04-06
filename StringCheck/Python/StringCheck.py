@@ -41,6 +41,70 @@ class StringCheck:
         self.makeArr(_wb,'iOS-New',self._iosStringArr)
         print "loadString"
     
+    def writeLocalString(self, line, langInput, name, keyword, value):
+        print 'write' + langInput +' : ' + line +' : '+ langInput +' : '+ name +' : '+ keyword +' : '+ value
+        for dictionary in self._localizationDictArr:
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
+            if lang != langInput:
+                continue
+            print lang
+
+    
+    def searchPrefix(self, name, searchName, maxSearchLen):
+        lowerName = name.lower()
+        lowerSearchName = searchName.lower()
+        if len(lowerSearchName) < 3 or len(lowerSearchName) < maxSearchLen :
+            return -1
+        if lowerName.find(lowerSearchName[:1]) < 0 :
+            return -1
+        location = lowerName.find(lowerSearchName)
+        #print 'step1 ' + searchName + ' : ' + name + ': ' + str(location)
+        if location == 0 :
+            #print 'searchName : ' + searchName
+            return len(searchName)
+        else :
+            return self.searchPrefix(name,searchName[:-1],maxSearchLen)
+    
+    def insertCheck(self, name, keyword, value):
+        print 'insert : ' + name
+        retArr = []
+        for dictionary in self._localizationDictArr:
+            searchClassName = ''
+            searchMax = -1
+            lineMax = -1
+            lastLine = -1
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
+            for key, val in dictionary.items():
+                className = key[key.find(':')+1:key.rfind(':')]
+                line = key[:key.find(':')]
+                if int(lastLine) < int(line):
+                    lastLine = line
+                if len(className) == 0:
+                    continue
+                if className == name:
+                    retArr.append(lang+'@#$'+key+'@#$'+val)
+                    break
+                else:
+                    searchLength = self.searchPrefix(className,name,searchMax)
+                    if searchLength < 0 :
+                        continue
+                    #print str(searchLength)
+                    if searchLength == searchMax and line > lineMax :
+                        lineMax = line
+                        searchClassName = lang+'@#$'+key+'@#$'+val
+                    if searchLength > searchMax :
+                        searchClassName = lang+'@#$'+key+'@#$'+val
+                        searchMax = searchLength
+            if len(searchClassName) > 0 :
+                retArr.append(searchClassName)
+            else:
+                retArr.append(lang+'@#$'+str(lastLine)+': : '+'@#$'+'lastLine')
+        return retArr
+    
     def duplicationCheck(self, value):
         print 'check : ' + value
         retArr = []
@@ -82,6 +146,16 @@ class StringCheck:
     def is_asleep(self):
         return True
     
+    def insertString(self, name, keyword, value):
+        print name + keyword + value
+        return self.insertCheck(name, keyword, value)
+    
+    
+    def getValue(self,line):
+        start = line.find("\"")
+        end = line.rfind("\"")
+        return line[start+1:end]
+    
     def getDictionaryInLSFile(self, filePath):
         dictionary = {}
         f = open(filePath, 'r')
@@ -92,8 +166,8 @@ class StringCheck:
             range = line.find('=')
             key = str(i)
             if range > 0:
-                keyword = line[1:range-1]
-                value = line[range+2:-3]
+                keyword = self.getValue(line[:range])
+                value = self.getValue(line[range+1:])
                 dictionary[key+':'+keyword] = value
             else :
                 dictionary[key+':empty'] = 'empty'
@@ -104,10 +178,14 @@ class StringCheck:
     def loadLocalString(self, filePath):
         for filename in os.listdir(filePath):
             if filename.find('lproj') > 0 :
+                if filename.find('zh-Hant') > 0 :
+                    continue
                 for lsPath in os.listdir(filePath+'/'+filename):
                     if lsPath.find('strings') > 0 :
                         self._localizationPathArr.append(filePath+'/'+filename+'/'+lsPath)
         for path in self._localizationPathArr:
+            if path.find('zh-Hant') > 0 :
+                continue
             print path
             dictionary = self.getDictionaryInLSFile(path)
             self._localizationDictArr.append(dictionary)

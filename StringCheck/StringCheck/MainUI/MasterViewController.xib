@@ -10,7 +10,10 @@
                 <outlet property="_dragAndDropViewAppStringPath" destination="V7B-jW-ZaY" id="bXu-bf-hPY"/>
                 <outlet property="_dragAndDropViewLoStringPath" destination="cmh-ST-cXh" id="VST-A4-ck4"/>
                 <outlet property="_gskeywordTextField" destination="Gii-ZD-rB4" id="YW3-pz-JwC"/>
+                <outlet property="_insertAllButton" destination="gGk-Sj-b6S" id="1OR-U8-UyI"/>
                 <outlet property="_keywordTextField" destination="Fvk-aO-YrU" id="Fk8-Ii-MuG"/>
+                <outlet property="_nonDuplicateCheck" destination="Fq7-8s-jIc" id="9AH-GH-9hy"/>
+                <outlet property="_nonSearchDuplicateCheck" destination="VwY-0J-FfH" id="waQ-BJ-Uz4"/>
                 <outlet property="_resultTable" destination="bYh-lq-g8h" id="Jcy-zo-haN"/>
                 <outlet property="_submitButton" destination="tFc-9n-WF7" id="dTj-vn-q4l"/>
                 <outlet property="_textFiledAppStringPath" destination="w46-Bd-QsX" id="rUa-yn-saa"/>
@@ -88,7 +91,6 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
-                        <outlet property="delegate" destination="-2" id="R3M-qd-zoi"/>
                         <outlet property="nextKeyView" destination="Fvk-aO-YrU" id="yK4-hI-4Wb"/>
                     </connections>
                 </textField>
@@ -127,6 +129,7 @@
                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                     <connections>
+                        <outlet property="delegate" destination="-2" id="Xb5-A4-J7j"/>
                         <outlet property="nextKeyView" destination="Gii-ZD-rB4" id="TN6-fM-cVC"/>
                     </connections>
                 </textField>
@@ -163,7 +166,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowHeight="30" headerView="mct-jc-Fri" id="bYh-lq-g8h" customClass="CustomTable">
-                                <rect key="frame" x="0.0" y="0.0" width="821.5" height="32"/>
+                                <rect key="frame" x="0.0" y="0.0" width="958" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -256,6 +259,23 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </tableHeaderView>
                 </scrollView>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VwY-0J-FfH">
+                    <rect key="frame" x="454" y="692" width="120" height="18"/>
+                    <buttonCell key="cell" type="check" title="유사 문자열만 보기" bezelStyle="regularSquare" imagePosition="left" inset="2" id="Yw0-NA-rpL">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
+                </button>
+                <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGk-Sj-b6S">
+                    <rect key="frame" x="879" y="584" width="107" height="32"/>
+                    <buttonCell key="cell" type="push" title="insert all" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yBv-Vz-wk7">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="insertAllButton:" target="-2" id="yJ4-5H-YQH"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="cmh-ST-cXh" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="1pj-d2-bND"/>
