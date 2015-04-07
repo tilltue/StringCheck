@@ -41,15 +41,35 @@ class StringCheck:
         self.makeArr(_wb,'iOS-New',self._iosStringArr)
         print "loadString"
     
-    def writeLocalString(self, line, langInput, name, keyword, value):
-        print 'write' + langInput +' : ' + line +' : '+ langInput +' : '+ name +' : '+ keyword +' : '+ value
+    def writeFile(self,path,line,string,sameClass):
+        f = open(path,'r')
+        lines = f.readlines()
+        f.close()
+        
+        if sameClass == 0 :
+            print 'sametest' + str(line)
+            lines.insert(int(line)-1,string)
+        else :
+            if lines[int(line)-1] != '\n':
+                lines.insert(int(line),'\n')
+                lines.insert(int(line)+1,string)
+            else:
+                lines.insert(int(line),string)
+        f = open(path,'w')
+        f.writelines(lines)
+        f.close()
+    
+    def writeLocalString(self, line, lang, name, keyword, value, sameClass):
+        writeString = '"' + name + ':' + keyword + '"="' + value + '";\n'
+        #print str(line) + writeString
         for dictionary in self._localizationDictArr:
             index = self._localizationDictArr.index(dictionary)
-            lang = self._localizationPathArr[index]
-            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
-            if lang != langInput:
+            LSpath = self._localizationPathArr[index]
+            langName = LSpath[LSpath.find('Resources/')+10:LSpath.rfind('.lproj')]
+            if langName != lang:
                 continue
-            print lang
+            self.writeFile(LSpath,line,writeString,sameClass)
+
 
     
     def searchPrefix(self, name, searchName, maxSearchLen):
@@ -78,6 +98,7 @@ class StringCheck:
             index = self._localizationDictArr.index(dictionary)
             lang = self._localizationPathArr[index]
             lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
+            sameFind = 0
             for key, val in dictionary.items():
                 className = key[key.find(':')+1:key.rfind(':')]
                 line = key[:key.find(':')]
@@ -86,9 +107,12 @@ class StringCheck:
                 if len(className) == 0:
                     continue
                 if className == name:
-                    retArr.append(lang+'@#$'+key+'@#$'+val)
-                    break
-                else:
+                    sameFind = 1
+                    if line > lineMax :
+                        searchClassName = lang+'@#$'+key+'@#$'+val
+                        lineMax = line
+                    continue
+                elif sameFind == 0 :
                     searchLength = self.searchPrefix(className,name,searchMax)
                     if searchLength < 0 :
                         continue

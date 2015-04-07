@@ -6,6 +6,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MasterViewController">
             <connections>
+                <outlet property="_addPrefixButton" destination="IFB-56-c4s" id="gcz-yY-jgz"/>
                 <outlet property="_classTextField" destination="6Pn-h8-d7S" id="WTL-1U-5BV"/>
                 <outlet property="_dragAndDropViewAppStringPath" destination="V7B-jW-ZaY" id="bXu-bf-hPY"/>
                 <outlet property="_dragAndDropViewLoStringPath" destination="cmh-ST-cXh" id="VST-A4-ck4"/>
@@ -275,6 +276,13 @@
                     <connections>
                         <action selector="insertAllButton:" target="-2" id="yJ4-5H-YQH"/>
                     </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IFB-56-c4s">
+                    <rect key="frame" x="638" y="592" width="120" height="20"/>
+                    <buttonCell key="cell" type="check" title="(번)prefix 붙이기" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PUp-Rk-5lA">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
                 </button>
             </subviews>
             <constraints>

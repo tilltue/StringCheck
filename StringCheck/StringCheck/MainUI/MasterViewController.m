@@ -17,6 +17,7 @@
 @property (nonatomic, strong) NSString *key;
 @property (nonatomic, strong) NSString *value;
 @property (nonatomic, assign) BOOL insert;
+@property (nonatomic, assign) BOOL sameClass;
 @end
 
 @implementation LStringObject
@@ -39,6 +40,7 @@
     IBOutlet NSButton *_nonDuplicateCheck;
     IBOutlet NSButton *_nonSearchDuplicateCheck;
     IBOutlet NSButton *_insertAllButton;
+    IBOutlet NSButton *_addPrefixButton;
     
     IBOutlet CustomTable *_resultTable;
     
@@ -106,7 +108,11 @@
 
 - (void)writeLString:(LStringObject *)object
 {
-    PyObject_CallMethod(_stringCheck,"writeLocalString", "(sssss)",[object.line UTF8String],[object.lang UTF8String],[object.name UTF8String],[object.key UTF8String],[object.value UTF8String]);
+    NSString *value = object.value;
+    if( _addPrefixButton.state ){
+        value = [NSString stringWithFormat:@"(번)%@",value];
+    }
+    PyObject_CallMethod(_stringCheck,"writeLocalString", "(sssssd)",[object.line UTF8String],[object.lang UTF8String],[object.name UTF8String],[object.key UTF8String],[value UTF8String],object.sameClass);
 }
 
 - (void)insertLString:(LStringObject *)object
@@ -139,9 +145,10 @@
                     object.value= array[4];
                     [_resultArr addObject:object];
                     LStringObject *addObject = [LStringObject new];
-                    addObject.lang = @"┗";
+                    addObject.sameClass = [[array[2] lowercaseString] isEqualToString:[_keywordTextField.stringValue lowercaseString]];
+                    addObject.lang = array[0];
                     addObject.line = [NSString stringWithFormat:@"%d",[array[1] intValue] + 1];
-                    addObject.name = _classTextField.stringValue;
+                    addObject.name = addObject.sameClass?object.name:_classTextField.stringValue;
                     addObject.key  = _keywordTextField.stringValue;
                     addObject.value= _valueTextField.stringValue;
                     addObject.insert = YES;
@@ -355,6 +362,22 @@ duplicateCheck
     }
     return nil;
 }
+
+- (NSCell *)tableView:(NSTableView *)tableView dataCellForTableColumn:(NSTableColumn *)tableColumn row:(NSInteger)row
+{
+    NSTextFieldCell *cell = [tableColumn dataCell];
+    [cell setTextColor: [NSColor blackColor]];
+    id object = [_resultArr objectAtIndex:row];
+    if( [object isKindOfClass:[NSString class]] ){
+    }else if( [object isKindOfClass:[LStringObject class]]){
+        LStringObject *lsObject = object;
+        if( lsObject.insert )
+            [cell setTextColor: [NSColor redColor]];
+    }
+    
+    return cell;
+}
+
 
 - (void)tableView:(NSTableView *)tableView didClickedRow:(NSInteger)row
 {
