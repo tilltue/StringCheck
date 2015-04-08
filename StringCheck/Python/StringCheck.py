@@ -41,26 +41,51 @@ class StringCheck:
         self.makeArr(_wb,'iOS-New',self._iosStringArr)
         print "loadString"
     
-    def writeFile(self,path,line,string,sameClass):
+    def writeFile(self,path,line,string,sameClass,insertLast):
         f = open(path,'r')
         lines = f.readlines()
         f.close()
-        
-        if sameClass == 0 :
-            print 'sametest' + str(line)
-            lines.insert(int(line)-1,string)
+        if insertLast == '0' :
+            #print 'insert last'
+            lines.append('\n')
+            lines.append(string)
         else :
-            if lines[int(line)-1] != '\n':
-                lines.insert(int(line),'\n')
-                lines.insert(int(line)+1,string)
-            else:
-                lines.insert(int(line),string)
+            if sameClass == '0' :
+                insertLine = int(line)-1
+                checkString = lines[insertLine-1]
+                #print 'same'
+                if checkString.find('\n') < 0 :
+                    lines.insert(insertLine,'\n')
+                    insertLine += 1
+                lines.insert(insertLine,string)
+                insertLine+=1
+                lines.insert(insertLine,'\n')
+            else :
+                insertLine = int(line)
+                if insertLine > len(lines) :
+                    checkString = lines[len(lines)-1]
+                    if checkString != '\n' :
+                        lines.append('\n')
+                    lines.append('\n')
+                    lines.append(string)
+                else :
+                    if lines[insertLine-1] != '\n':
+                        lines.insert(insertLine,'\n')
+                        insertLine+=1
+                        lines.insert(insertLine,string)
+                    else:
+                        lines.insert(insertLine,string)
+                    insertLine+=1
+                    lines.insert(insertLine,'\n')
+                    if lines[insertLine+1] != '\n':
+                        insertLine+=1
+                        lines.insert(insertLine,'\n')
         f = open(path,'w')
         f.writelines(lines)
         f.close()
     
-    def writeLocalString(self, line, lang, name, keyword, value, sameClass):
-        writeString = '"' + name + ':' + keyword + '"="' + value + '";\n'
+    def writeLocalString(self, line, lang, name, keyword, value, sameClass, insertLast):
+        writeString = '"' + name + ':' + keyword + '"="' + value + '";'
         #print str(line) + writeString
         for dictionary in self._localizationDictArr:
             index = self._localizationDictArr.index(dictionary)
@@ -68,8 +93,8 @@ class StringCheck:
             langName = LSpath[LSpath.find('Resources/')+10:LSpath.rfind('.lproj')]
             if langName != lang:
                 continue
-            self.writeFile(LSpath,line,writeString,sameClass)
-
+            self.writeFile(LSpath,line,writeString,sameClass,insertLast)
+            self._localizationDictArr[index] = self.getDictionaryInLSFile(LSpath)
 
     
     def searchPrefix(self, name, searchName, maxSearchLen):
@@ -94,6 +119,7 @@ class StringCheck:
             searchClassName = ''
             searchMax = -1
             lineMax = -1
+            sameLineMax = -1
             lastLine = -1
             index = self._localizationDictArr.index(dictionary)
             lang = self._localizationPathArr[index]
@@ -106,11 +132,11 @@ class StringCheck:
                     lastLine = line
                 if len(className) == 0:
                     continue
-                if className == name:
+                if className.lower() == name.lower():
                     sameFind = 1
-                    if line > lineMax :
+                    if line > sameLineMax :
                         searchClassName = lang+'@#$'+key+'@#$'+val
-                        lineMax = line
+                        sameLineMax = line
                     continue
                 elif sameFind == 0 :
                     searchLength = self.searchPrefix(className,name,searchMax)
@@ -155,6 +181,34 @@ class StringCheck:
         #print 'len' + str(len(retArr))
         return retArr
     
+    def getLastLine(self,name):
+        retArr = []
+        for dictionary in self._localizationDictArr:
+            searchClassName = ''
+            lastLine = -1
+            sameLineMax = -1
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
+            sameFind = 0
+            for key, val in dictionary.items():
+                className = key[key.find(':')+1:key.rfind(':')]
+                line = key[:key.find(':')]
+                if int(lastLine) < int(line):
+                    lastLine = line
+                if len(className) == 0:
+                    continue
+                if className.lower() == name.lower():
+                    sameFind = 1
+                    if line > sameLineMax :
+                        searchClassName = lang+'@#$'+key+'@#$'+val
+                        sameLineMax = line
+                    continue
+            if len(searchClassName) > 0 :
+                retArr.append(searchClassName)
+            else:
+                retArr.append(lang+'@#$'+str(lastLine)+': : '+'@#$'+'lastLine')
+        return retArr
     
     def set_name(self, name):
         self.__name = name

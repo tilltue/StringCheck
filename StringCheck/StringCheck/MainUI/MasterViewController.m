@@ -41,6 +41,7 @@
     IBOutlet NSButton *_nonSearchDuplicateCheck;
     IBOutlet NSButton *_insertAllButton;
     IBOutlet NSButton *_addPrefixButton;
+    IBOutlet NSButton *_lastInsertButton;
     
     IBOutlet CustomTable *_resultTable;
     
@@ -112,12 +113,20 @@
     if( _addPrefixButton.state ){
         value = [NSString stringWithFormat:@"(번)%@",value];
     }
-    PyObject_CallMethod(_stringCheck,"writeLocalString", "(sssssd)",[object.line UTF8String],[object.lang UTF8String],[object.name UTF8String],[object.key UTF8String],[value UTF8String],object.sameClass);
+    PyObject_CallMethod(_stringCheck,"writeLocalString", "(sssssss)",[object.line UTF8String],[object.lang UTF8String],[object.name UTF8String],[object.key UTF8String],[value UTF8String],
+                        (object.sameClass?[@"0" UTF8String]:[@"1" UTF8String]),
+                        (_lastInsertButton.state?[@"0" UTF8String]:[@"1" UTF8String])
+                        );
 }
+
 
 - (void)insertLString:(LStringObject *)object
 {
-    PyObject *pyObject = PyObject_CallMethod(_stringCheck,"insertString", "(sss)",[object.name UTF8String],[object.key UTF8String],[object.value UTF8String]);
+    PyObject *pyObject = nil;
+    if( _lastInsertButton.state )
+        pyObject = PyObject_CallMethod(_stringCheck,"getLastLine", "(s)",[object.name UTF8String]);
+    else
+        pyObject = PyObject_CallMethod(_stringCheck,"insertString", "(sss)",[object.name UTF8String],[object.key UTF8String],[object.value UTF8String]);
     if( pyObject != nil ){
         Py_ssize_t len = PyList_Size(pyObject);
         NSMutableArray *list = [NSMutableArray new];
@@ -133,6 +142,7 @@
         if(  list.count > 0 ){
             [_resultArr addObject:@"유사 클래스의 마지막 라인"];
             _insertAllButton.enabled = YES;
+            NSInteger insertCount = 0;
             for( NSString *value in list )
             {
                 NSArray *array = [self parseValue:value];
@@ -145,15 +155,22 @@
                     object.value= array[4];
                     [_resultArr addObject:object];
                     LStringObject *addObject = [LStringObject new];
-                    addObject.sameClass = [[array[2] lowercaseString] isEqualToString:[_keywordTextField.stringValue lowercaseString]];
+                    addObject.sameClass = [[array[2] lowercaseString] isEqualToString:[_classTextField.stringValue lowercaseString]];
                     addObject.lang = array[0];
                     addObject.line = [NSString stringWithFormat:@"%d",[array[1] intValue] + 1];
                     addObject.name = addObject.sameClass?object.name:_classTextField.stringValue;
                     addObject.key  = _keywordTextField.stringValue;
                     addObject.value= _valueTextField.stringValue;
                     addObject.insert = YES;
+                    if( [object.lang isEqualToString:addObject.lang] && [object.name isEqualToString:addObject.name] && [object.key isEqualToString:addObject.key] ){
+                        addObject.insert = NO;
+                        addObject.value = @"해당 키가 이미 존재합니다";
+                    }
+                    if( addObject.insert )
+                        insertCount+=1;
                     [_resultArr addObject:addObject];
                 }
+                _insertAllButton.title = [NSString stringWithFormat:@"insert All (%ld)",insertCount];
             }
             [_resultTable reloadData];
         }else{
@@ -266,6 +283,9 @@
                     [self writeLString:object];
             }
         }
+        [_resultArr removeAllObjects];
+        [_resultTable reloadData];
+        _insertAllButton.enabled = NO;
     }
 }
 
@@ -404,6 +424,14 @@ duplicateCheck
     alert.messageText = @"같은 문자열을 사용하는 경우\n중복 문자열을 생성해주세요.";
     [alert runModal];
 }
+
+- (void)showDuplicateKeyAlert
+{
+    NSAlert *alert = [NSAlert new];
+    alert.messageText = @"이미 해당 키값이 존재합니다.";
+    [alert runModal];
+}
+
 
 #pragma mark - table context menu
 

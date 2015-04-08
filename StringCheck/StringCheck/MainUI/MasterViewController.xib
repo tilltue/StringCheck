@@ -13,6 +13,7 @@
                 <outlet property="_gskeywordTextField" destination="Gii-ZD-rB4" id="YW3-pz-JwC"/>
                 <outlet property="_insertAllButton" destination="gGk-Sj-b6S" id="1OR-U8-UyI"/>
                 <outlet property="_keywordTextField" destination="Fvk-aO-YrU" id="Fk8-Ii-MuG"/>
+                <outlet property="_lastInsertButton" destination="WRZ-ca-TZg" id="3FT-Iv-0Av"/>
                 <outlet property="_nonDuplicateCheck" destination="Fq7-8s-jIc" id="9AH-GH-9hy"/>
                 <outlet property="_nonSearchDuplicateCheck" destination="VwY-0J-FfH" id="waQ-BJ-Uz4"/>
                 <outlet property="_resultTable" destination="bYh-lq-g8h" id="Jcy-zo-haN"/>
@@ -278,8 +279,15 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IFB-56-c4s">
-                    <rect key="frame" x="638" y="592" width="120" height="20"/>
+                    <rect key="frame" x="759" y="590" width="120" height="20"/>
                     <buttonCell key="cell" type="check" title="(번)prefix 붙이기" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PUp-Rk-5lA">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WRZ-ca-TZg">
+                    <rect key="frame" x="587" y="590" width="168" height="20"/>
+                    <buttonCell key="cell" type="check" title="무조건 마지막 라인에 붙이기" bezelStyle="regularSquare" imagePosition="left" inset="2" id="n1w-gY-Yvy">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
                     </buttonCell>
