@@ -20,6 +20,7 @@
                 <outlet property="_submitButton" destination="tFc-9n-WF7" id="dTj-vn-q4l"/>
                 <outlet property="_textFiledAppStringPath" destination="w46-Bd-QsX" id="rUa-yn-saa"/>
                 <outlet property="_textFiledLoStringPath" destination="dhJ-Kf-P6y" id="CWZ-pX-ljw"/>
+                <outlet property="_translationCheckButton" destination="Xhb-PA-hi6" id="y3Q-TZ-Q0G"/>
                 <outlet property="_valueTextField" destination="CAA-LP-62n" id="YrR-ke-heo"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -30,21 +31,17 @@
             <rect key="frame" x="0.0" y="0.0" width="1000" height="800"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <button translatesAutoresizingMaskIntoConstraints="NO" id="Fq7-8s-jIc">
-                    <rect key="frame" x="905" y="756" width="77" height="26"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="22" id="o7K-ri-Ok5"/>
-                        <constraint firstAttribute="width" constant="73" id="tum-Lf-cyi"/>
-                    </constraints>
-                    <buttonCell key="cell" type="check" title="중복 체크" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="XGE-vN-h3N">
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fq7-8s-jIc">
+                    <rect key="frame" x="578" y="688" width="77" height="26"/>
+                    <buttonCell key="cell" type="check" title="중복 체크" bezelStyle="regularSquare" imagePosition="left" inset="2" id="XGE-vN-h3N">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" metaFont="system"/>
                     </buttonCell>
                 </button>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="V7B-jW-ZaY" customClass="MDDragDropView">
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V7B-jW-ZaY" customClass="MDDragDropView">
                     <rect key="frame" x="20" y="758" width="879" height="22"/>
                     <subviews>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="w46-Bd-QsX">
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w46-Bd-QsX">
                             <rect key="frame" x="0.0" y="0.0" width="879" height="22"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="App String Xlsx 파일을 여기에 드래그&amp;드랍 해주세요." drawsBackground="YES" id="LzA-cB-D9O">
                                 <font key="font" metaFont="system"/>
@@ -53,15 +50,8 @@
                             </textFieldCell>
                         </textField>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="trailing" secondItem="w46-Bd-QsX" secondAttribute="trailing" id="Kjk-Mf-QPu"/>
-                        <constraint firstItem="w46-Bd-QsX" firstAttribute="top" secondItem="V7B-jW-ZaY" secondAttribute="top" id="Pka-Du-gBx"/>
-                        <constraint firstAttribute="bottom" secondItem="w46-Bd-QsX" secondAttribute="bottom" id="Yue-Ul-vOy"/>
-                        <constraint firstAttribute="height" constant="22" id="bCK-GU-xkb"/>
-                        <constraint firstItem="w46-Bd-QsX" firstAttribute="leading" secondItem="V7B-jW-ZaY" secondAttribute="leading" id="e6T-1L-al5"/>
-                    </constraints>
                 </customView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="cmh-ST-cXh" customClass="MDDragDropView">
+                <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cmh-ST-cXh" customClass="MDDragDropView">
                     <rect key="frame" x="20" y="728" width="879" height="22"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dhJ-Kf-P6y">
@@ -73,9 +63,6 @@
                             </textFieldCell>
                         </textField>
                     </subviews>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="22" id="lw6-PG-zFd"/>
-                    </constraints>
                 </customView>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eLj-De-rdW">
                     <rect key="frame" x="18" y="693" width="159" height="17"/>
@@ -85,7 +72,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="6Pn-h8-d7S">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="6Pn-h8-d7S" customClass="CustomTextField">
                     <rect key="frame" x="20" y="655" width="155" height="30"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ex. FXHomeVC" drawsBackground="YES" id="Vkq-g2-f1g">
                         <font key="font" metaFont="system"/>
@@ -104,7 +91,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="Fvk-aO-YrU">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="2" translatesAutoresizingMaskIntoConstraints="NO" id="Fvk-aO-YrU" customClass="CustomTextField">
                     <rect key="frame" x="183" y="655" width="155" height="30"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ex. networkError" drawsBackground="YES" id="faJ-14-Ffa">
                         <font key="font" metaFont="system"/>
@@ -123,7 +110,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="CAA-LP-62n">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="CAA-LP-62n" customClass="CustomTextField">
                     <rect key="frame" x="346" y="655" width="553" height="30"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ex 네트워크 에러" drawsBackground="YES" id="TTi-nW-o09">
                         <font key="font" metaFont="system"/>
@@ -145,6 +132,26 @@
                         <action selector="submitButton:" target="-2" id="uhK-eE-UzU"/>
                     </connections>
                 </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xC0-eM-cU6">
+                    <rect key="frame" x="918" y="719" width="64" height="64"/>
+                    <buttonCell key="cell" type="bevel" title="번역 검사" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="DCR-pb-ZCa">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="10" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="translationButton:" target="-2" id="W1Q-OW-vsK"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NpR-T0-MYQ">
+                    <rect key="frame" x="918" y="589" width="64" height="64"/>
+                    <buttonCell key="cell" type="bevel" title="중복 검사" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="8dT-HG-wxn">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="10" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="duplicateButton:" target="-2" id="oJy-W1-guv"/>
+                    </connections>
+                </button>
                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zdJ-1g-eow">
                     <rect key="frame" x="18" y="630" width="159" height="20"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="GS Keyword" id="2Db-dx-Cfw">
@@ -153,7 +160,7 @@
                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                     </textFieldCell>
                 </textField>
-                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="Gii-ZD-rB4">
+                <textField verticalHuggingPriority="750" fixedFrame="YES" tag="4" translatesAutoresizingMaskIntoConstraints="NO" id="Gii-ZD-rB4" customClass="CustomTextField">
                     <rect key="frame" x="20" y="592" width="155" height="30"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ex. networkError" drawsBackground="YES" id="JTi-Su-2Cd">
                         <font key="font" metaFont="system"/>
@@ -269,7 +276,7 @@
                     </buttonCell>
                 </button>
                 <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGk-Sj-b6S">
-                    <rect key="frame" x="879" y="584" width="107" height="32"/>
+                    <rect key="frame" x="798" y="585" width="107" height="32"/>
                     <buttonCell key="cell" type="push" title="insert all" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="yBv-Vz-wk7">
                         <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                         <font key="font" metaFont="system"/>
@@ -279,30 +286,27 @@
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IFB-56-c4s">
-                    <rect key="frame" x="759" y="590" width="120" height="20"/>
+                    <rect key="frame" x="678" y="591" width="120" height="20"/>
                     <buttonCell key="cell" type="check" title="(번)prefix 붙이기" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="PUp-Rk-5lA">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
                     </buttonCell>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WRZ-ca-TZg">
-                    <rect key="frame" x="587" y="590" width="168" height="20"/>
+                    <rect key="frame" x="506" y="591" width="168" height="20"/>
                     <buttonCell key="cell" type="check" title="무조건 마지막 라인에 붙이기" bezelStyle="regularSquare" imagePosition="left" inset="2" id="n1w-gY-Yvy">
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
                     </buttonCell>
                 </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xhb-PA-hi6">
+                    <rect key="frame" x="363" y="591" width="131" height="20"/>
+                    <buttonCell key="cell" type="check" title="번역된 문자열만 검색" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="moE-ua-Pkn">
+                        <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                        <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
+                </button>
             </subviews>
-            <constraints>
-                <constraint firstItem="cmh-ST-cXh" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="1pj-d2-bND"/>
-                <constraint firstItem="V7B-jW-ZaY" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="20" id="7iv-Q8-l1I"/>
-                <constraint firstItem="V7B-jW-ZaY" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="BPR-9n-QYn"/>
-                <constraint firstAttribute="trailing" secondItem="cmh-ST-cXh" secondAttribute="trailing" constant="101" id="CaQ-e0-AiD"/>
-                <constraint firstAttribute="trailing" secondItem="Fq7-8s-jIc" secondAttribute="trailing" constant="20" id="FL1-gl-79g"/>
-                <constraint firstItem="Fq7-8s-jIc" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="20" id="Sha-WN-Gd6"/>
-                <constraint firstItem="cmh-ST-cXh" firstAttribute="top" secondItem="V7B-jW-ZaY" secondAttribute="bottom" constant="8" id="aCp-mv-gE1"/>
-                <constraint firstItem="Fq7-8s-jIc" firstAttribute="leading" secondItem="V7B-jW-ZaY" secondAttribute="trailing" constant="8" id="l7H-1K-J3U"/>
-            </constraints>
             <point key="canvasLocation" x="590" y="440"/>
         </customView>
     </objects>

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		22343CE31AD7B9B00041FE6C /* openpyxl in Resources */ = {isa = PBXBuildFile; fileRef = 22343CE21AD7B9B00041FE6C /* openpyxl */; };
+		22343CE61AD7C1420041FE6C /* CustomTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 22343CE51AD7C1420041FE6C /* CustomTextField.m */; };
 		22406FF51ABEC61A00039F9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 22406FF41ABEC61A00039F9A /* AppDelegate.m */; };
 		22406FF71ABEC61A00039F9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 22406FF61ABEC61A00039F9A /* main.m */; };
 		22406FFA1ABEC61A00039F9A /* StringCheck.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 22406FF81ABEC61A00039F9A /* StringCheck.xcdatamodeld */; };
@@ -33,6 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		22343CE21AD7B9B00041FE6C /* openpyxl */ = {isa = PBXFileReference; lastKnownFileType = folder; name = openpyxl; path = Python/openpyxl; sourceTree = SOURCE_ROOT; };
+		22343CE41AD7C1420041FE6C /* CustomTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomTextField.h; path = MainUI/CustomTextField.h; sourceTree = "<group>"; };
+		22343CE51AD7C1420041FE6C /* CustomTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CustomTextField.m; path = MainUI/CustomTextField.m; sourceTree = "<group>"; };
 		22406FEE1ABEC61A00039F9A /* StringCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StringCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22406FF21ABEC61A00039F9A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		22406FF31ABEC61A00039F9A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -99,6 +104,7 @@
 		22406FF01ABEC61A00039F9A /* StringCheck */ = {
 			isa = PBXGroup;
 			children = (
+				22343CE21AD7B9B00041FE6C /* openpyxl */,
 				2240701E1ABEC74000039F9A /* Python */,
 				224070191ABEC66900039F9A /* MainUI */,
 				22406FF31ABEC61A00039F9A /* AppDelegate.h */,
@@ -142,6 +148,8 @@
 			children = (
 				A34C7C0F1ACD69590085BC66 /* CustomTable.h */,
 				A34C7C101ACD69590085BC66 /* CustomTable.m */,
+				22343CE41AD7C1420041FE6C /* CustomTextField.h */,
+				22343CE51AD7C1420041FE6C /* CustomTextField.m */,
 				224070231ABEE34600039F9A /* MDDragDropView.h */,
 				224070241ABEE34600039F9A /* MDDragDropView.m */,
 				224070141ABEC66400039F9A /* MasterViewController.h */,
@@ -241,6 +249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				224070221ABEC74000039F9A /* StringCheck.py in Resources */,
+				22343CE31AD7B9B00041FE6C /* openpyxl in Resources */,
 				22406FFC1ABEC61A00039F9A /* Images.xcassets in Resources */,
 				224070211ABEC74000039F9A /* Cat.py in Resources */,
 				22406FFF1ABEC61A00039F9A /* MainMenu.xib in Resources */,
@@ -266,6 +275,7 @@
 				22406FFA1ABEC61A00039F9A /* StringCheck.xcdatamodeld in Sources */,
 				22406FF71ABEC61A00039F9A /* main.m in Sources */,
 				224070251ABEE34600039F9A /* MDDragDropView.m in Sources */,
+				22343CE61AD7C1420041FE6C /* CustomTextField.m in Sources */,
 				22406FF51ABEC61A00039F9A /* AppDelegate.m in Sources */,
 				A34C7C111ACD69590085BC66 /* CustomTable.m in Sources */,
 			);

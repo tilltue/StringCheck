@@ -30,14 +30,25 @@ class StringCheck:
             array.append([])
             for cell in row:
                 if cell.value != None:
-                    array[rowCount].append(cell.value);
+                    if type(cell.value) == unicode:
+                        endcodeString = cell.value.encode('utf-8')
+                        uniString = unicode(endcodeString,'utf-8')
+                        array[rowCount].append(uniString)
+                        #print str(rowCount) + str(uniString.encode('utf-8'))
+                    else:
+                        array[rowCount].append(cell.value)
+                        #print str(rowCount) + str(uniString.encode('utf-8'))
+                else:
+                    array[rowCount].append("&&None&&")
             rowCount+=1
         print len(array)
     
     def loadString(self, filePath):
         print filePath
         _wb = load_workbook(filename = filePath, read_only=True)
+        self._androidStringArr = []
         self.makeArr(_wb,'Android-New',self._androidStringArr)
+        self._iosStringArr = []
         self.makeArr(_wb,'iOS-New',self._iosStringArr)
         print "loadString"
     
@@ -83,7 +94,34 @@ class StringCheck:
         f = open(path,'w')
         f.writelines(lines)
         f.close()
-    
+                        
+    def replaceLine(self,path,line,name,keyword,string):
+        f = open(path,'r')
+        lines = f.readlines()
+        f.close()
+        readLine = lines[int(line)-1]
+        range = readLine.find('=')
+        keyString = name + ':' + keyword
+        if range > 0:
+            key = self.getValue(readLine[:range])
+            if key == keyString:
+                #print string
+                lines[int(line)-1] = string
+                f = open(path,'w')
+                f.writelines(lines)
+                f.close()
+
+    def replaceLocalString(self, line, lang, name, keyword, value, sameClass, insertLast):
+        replaceString = '"' + name + ':' + keyword + '"="' + value + '";\n'
+        for dictionary in self._localizationDictArr:
+            index = self._localizationDictArr.index(dictionary)
+            LSpath = self._localizationPathArr[index]
+            langName = LSpath[LSpath.find('Resources/')+10:LSpath.rfind('.lproj')]
+            if langName != lang:
+                continue
+            self.replaceLine(LSpath,line,name,keyword,replaceString)
+            self._localizationDictArr[index] = self.getDictionaryInLSFile(LSpath)
+
     def writeLocalString(self, line, lang, name, keyword, value, sameClass, insertLast):
         writeString = '"' + name + ':' + keyword + '"="' + value + '";'
         #print str(line) + writeString
@@ -153,6 +191,66 @@ class StringCheck:
                 retArr.append(searchClassName)
             else:
                 retArr.append(lang+'@#$'+str(lastLine)+': : '+'@#$'+'lastLine')
+        return retArr
+    
+    def findLangIndex(self,lang):
+        langArr = self._iosStringArr[0]
+        langIndex = -1
+        if lang == 'ko':
+            langIndex = langArr.index('Korean')
+        elif lang == 'en':
+            langIndex = langArr.index('English')
+        elif lang == 'zh-Hans':
+            langIndex = langArr.index('Chinese')
+        elif lang == 'ja':
+            langIndex = langArr.index('Japanese')
+        elif lang == 'de':
+            langIndex = langArr.index('German')
+        elif lang == 'es':
+            langIndex = langArr.index('Spanish')
+        elif lang == 'fr':
+            langIndex = langArr.index('French')
+        elif lang == 'ru':
+            langIndex = langArr.index('Russian')
+        elif lang == 'it':
+            langIndex = langArr.index('Italian')
+        else:
+            print 'no'
+        #print str(langIndex)
+        return langIndex
+
+    def findTranslation(self,lang,keyword,value):
+        #self._iosStringArr
+        langIndex = self.findLangIndex(lang)
+        retString = ''
+        for array in self._iosStringArr:
+            if len(array) > 1 :
+                uniString = array[0]
+                if uniString.encode('utf-8') == keyword :
+                    if str(array[langIndex].encode('utf-8')) != '&&None&&' :
+                        #print str(uniString.encode('utf-8')) + '-=======-' + keyword
+                        #print str(array[langIndex].encode('utf-8')) + '-=======-' + value
+                        retString = str(array[langIndex].encode('utf-8'))
+                        return retString
+                    else:
+                        retString = str(array[langIndex].encode('utf-8'))
+                        return retString
+        return retString
+    
+    def translationCheck(self,prefix):
+        retArr = []
+        for dictionary in self._localizationDictArr:
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
+            #print lang
+            #print len(dictionary.items())
+            for key, val in dictionary.items():
+                if val.find(prefix) > 0 :
+                    keyword = key[key.find(':')+1:]
+                    translateValue = self.findTranslation(lang,keyword,val)
+                    if len(translateValue) > 0 and translateValue.find(prefix) < 0 :
+                        retArr.append(lang+'@#$'+key+'@#$'+val+'@#$'+translateValue)
         return retArr
     
     def duplicationCheck(self, value):
@@ -254,6 +352,8 @@ class StringCheck:
         return dictionary
 
     def loadLocalString(self, filePath):
+        self._localizationPathArr = []
+        self._localizationDictArr = []
         for filename in os.listdir(filePath):
             if filename.find('lproj') > 0 :
                 if filename.find('zh-Hant') > 0 :
