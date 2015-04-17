@@ -237,6 +237,34 @@ class StringCheck:
                         return retString
         return retString
     
+    def LSStringCheck(self,langStandard):
+        retArr = []
+        standardKeyArr = []
+        for dictionary in self._localizationDictArr:
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
+            if lang == langStandard:
+                for key, val in dictionary.items():
+                    keyword = key[key.find(':')+1:]
+                    standardKeyArr.append(keyword)
+                break
+        for dictionary in self._localizationDictArr:
+            index = self._localizationDictArr.index(dictionary)
+            lang = self._localizationPathArr[index]
+            lang = lang[lang.find('Resources/')+10:lang.rfind('.lproj')]
+            if lang != langStandard:
+                print lang
+                for standardKey in standardKeyArr:
+                    find = False
+                    for key, val in dictionary.items():
+                        keyword = key[key.find(':')+1:]
+                        if standardKey == keyword:
+                            find = True
+                    if find == False:
+                        print standardKey
+
+
     def translationCheck(self,prefix):
         retArr = []
         for dictionary in self._localizationDictArr:

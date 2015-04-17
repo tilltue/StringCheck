@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="7531" systemVersion="14C1514" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="6751"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="7531"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MasterViewController">
@@ -39,10 +39,10 @@
                     </buttonCell>
                 </button>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V7B-jW-ZaY" customClass="MDDragDropView">
-                    <rect key="frame" x="20" y="758" width="879" height="22"/>
+                    <rect key="frame" x="20" y="758" width="820" height="22"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w46-Bd-QsX">
-                            <rect key="frame" x="0.0" y="0.0" width="879" height="22"/>
+                            <rect key="frame" x="0.0" y="0.0" width="820" height="22"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="App String Xlsx 파일을 여기에 드래그&amp;드랍 해주세요." drawsBackground="YES" id="LzA-cB-D9O">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -52,10 +52,10 @@
                     </subviews>
                 </customView>
                 <customView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cmh-ST-cXh" customClass="MDDragDropView">
-                    <rect key="frame" x="20" y="728" width="879" height="22"/>
+                    <rect key="frame" x="20" y="728" width="820" height="22"/>
                     <subviews>
                         <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dhJ-Kf-P6y">
-                            <rect key="frame" x="0.0" y="0.0" width="879" height="22"/>
+                            <rect key="frame" x="0.0" y="0.0" width="820" height="22"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="center" title="Localization Path 를 여기에 드래그&amp;드랍 해주세요. ( ex . /POCloud/Resource )" drawsBackground="YES" id="i2O-EH-U20">
                                 <font key="font" metaFont="system"/>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -111,7 +111,7 @@
                     </textFieldCell>
                 </textField>
                 <textField verticalHuggingPriority="750" fixedFrame="YES" tag="3" translatesAutoresizingMaskIntoConstraints="NO" id="CAA-LP-62n" customClass="CustomTextField">
-                    <rect key="frame" x="346" y="655" width="553" height="30"/>
+                    <rect key="frame" x="346" y="655" width="494" height="30"/>
                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" placeholderString="ex 네트워크 에러" drawsBackground="YES" id="TTi-nW-o09">
                         <font key="font" metaFont="system"/>
                         <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -140,6 +140,16 @@
                     </buttonCell>
                     <connections>
                         <action selector="translationButton:" target="-2" id="W1Q-OW-vsK"/>
+                    </connections>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KRd-CH-RNx">
+                    <rect key="frame" x="846" y="719" width="64" height="64"/>
+                    <buttonCell key="cell" type="bevel" title="새로고침" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="5YN-fO-ZyJ">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="10" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="refreshButton:" target="-2" id="yBg-1U-wuX"/>
                     </connections>
                 </button>
                 <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NpR-T0-MYQ">
@@ -178,7 +188,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="958" height="32"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <size key="intercellSpacing" width="3" height="2"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
                                     <tableColumn identifier="lang" width="40" minWidth="40" maxWidth="1000" id="rty-XJ-nap">
@@ -305,6 +315,16 @@
                         <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                         <font key="font" size="13" name="AppleSDGothicNeo-Regular"/>
                     </buttonCell>
+                </button>
+                <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="so6-6L-Idk">
+                    <rect key="frame" x="846" y="651" width="64" height="64"/>
+                    <buttonCell key="cell" type="bevel" title="누락 체크" bezelStyle="regularSquare" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Xzl-Sp-Wls">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" size="10" name="AppleSDGothicNeo-Regular"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="LSStringCheck:" target="-2" id="zbd-JA-iab"/>
+                    </connections>
                 </button>
             </subviews>
             <point key="canvasLocation" x="590" y="440"/>

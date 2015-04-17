@@ -102,6 +102,12 @@
 
 #pragma mark - Python binding
 
+- (void)refreshData
+{
+    [self performSelector:@selector(stringLoad:) withObject:_textFiledAppStringPath.stringValue afterDelay:0.1];
+    [self performSelector:@selector(localStringLoad:) withObject:_textFiledLoStringPath.stringValue afterDelay:0.1];
+}
+
 - (void)stringLoad:(NSString *)path
 {
     PyObject_CallMethod(_stringCheck,"loadString", "(s)",[path UTF8String]);
@@ -120,6 +126,7 @@
                         (_lastInsertButton.state?[@"0" UTF8String]:[@"1" UTF8String])
                         );
 }
+
 - (void)writeLString:(LStringObject *)object
 {
     NSString *value = object.value;
@@ -130,6 +137,23 @@
                         (object.sameClass?[@"0" UTF8String]:[@"1" UTF8String]),
                         (_lastInsertButton.state?[@"0" UTF8String]:[@"1" UTF8String])
                         );
+}
+
+- (void)LSStringCheck
+{
+    PyObject *pyObject = PyObject_CallMethod(_stringCheck,"LSStringCheck", "(s)",[@"ko" UTF8String]);
+    if( pyObject != nil ){
+        Py_ssize_t len = PyList_Size(pyObject);
+        NSMutableArray *list = [NSMutableArray new];
+        Py_ssize_t i = 0;
+        for (i = 0; i < len; i++) {
+            PyObject *objcObject = PyList_GetItem(pyObject, (Py_ssize_t)i);
+            if (objcObject != nil) {
+                NSString *string = [NSString stringWithCString:PyString_AsString(objcObject) encoding:NSUTF8StringEncoding];
+                [list addObject:string];
+            }
+        }
+    }
 }
 
 - (void)translationCheck
@@ -337,6 +361,16 @@
 - (IBAction)translationButton:(id)sender
 {
     [self translationCheck];
+}
+
+- (IBAction)refreshButton:(id)sender
+{
+    [self refreshData];
+}
+
+- (IBAction)LSStringCheck:(id)sender
+{
+    [self performSelectorInBackground:@selector(LSStringCheck) withObject:nil];
 }
 
 - (IBAction)submitButton:(id)sender
