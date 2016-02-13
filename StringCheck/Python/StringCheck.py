@@ -7,7 +7,6 @@ from openpyxl import load_workbook
 
 class StringCheck:
     
-    __name = None
     _androidStringArr = []
     _iosStringArr = []
     _localizationPathArr = []
@@ -336,17 +335,6 @@ class StringCheck:
                 retArr.append(lang+'@#$'+str(lastLine)+': : '+'@#$'+'lastLine')
         return retArr
     
-    def set_name(self, name):
-        self.__name = name
-    
-    def name(self):
-        return self.__name
-    
-    def print_family(self, father, mother, nb_bros_sisters):
-        print "father is " + father
-        print "mother is " + mother
-        print "%d brothers and sisters" % nb_bros_sisters
-    
     def is_asleep(self):
         return True
     
@@ -399,9 +387,5 @@ class StringCheck:
 if __name__ == "__main__":
     _stringCheck = StringCheck()
     #_stringCheck.loadString()
-    _stringCheck.set_name("charly")
-    _stringCheck.print_family("jack", "cathy", 4)
-    print _stringCheck.name()
-    print _stringCheck.is_asleep()
 
 

@@ -18,7 +18,6 @@
 		224070171ABEC66400039F9A /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 224070151ABEC66400039F9A /* MasterViewController.m */; };
 		224070181ABEC66400039F9A /* MasterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 224070161ABEC66400039F9A /* MasterViewController.xib */; };
 		2240701B1ABEC67C00039F9A /* Python.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2240701A1ABEC67C00039F9A /* Python.framework */; };
-		224070211ABEC74000039F9A /* Cat.py in Resources */ = {isa = PBXBuildFile; fileRef = 2240701F1ABEC74000039F9A /* Cat.py */; };
 		224070221ABEC74000039F9A /* StringCheck.py in Resources */ = {isa = PBXBuildFile; fileRef = 224070201ABEC74000039F9A /* StringCheck.py */; };
 		224070251ABEE34600039F9A /* MDDragDropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 224070241ABEE34600039F9A /* MDDragDropView.m */; };
 		A34C7C111ACD69590085BC66 /* CustomTable.m in Sources */ = {isa = PBXBuildFile; fileRef = A34C7C101ACD69590085BC66 /* CustomTable.m */; };
@@ -53,7 +52,6 @@
 		224070151ABEC66400039F9A /* MasterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MasterViewController.m; path = MainUI/MasterViewController.m; sourceTree = "<group>"; };
 		224070161ABEC66400039F9A /* MasterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MasterViewController.xib; path = MainUI/MasterViewController.xib; sourceTree = "<group>"; };
 		2240701A1ABEC67C00039F9A /* Python.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Python.framework; path = System/Library/Frameworks/Python.framework; sourceTree = SDKROOT; };
-		2240701F1ABEC74000039F9A /* Cat.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = Cat.py; sourceTree = "<group>"; };
 		224070201ABEC74000039F9A /* StringCheck.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = StringCheck.py; sourceTree = "<group>"; };
 		224070231ABEE34600039F9A /* MDDragDropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MDDragDropView.h; path = MainUI/MDDragDropView.h; sourceTree = "<group>"; };
 		224070241ABEE34600039F9A /* MDDragDropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MDDragDropView.m; path = MainUI/MDDragDropView.m; sourceTree = "<group>"; };
@@ -162,7 +160,6 @@
 		2240701E1ABEC74000039F9A /* Python */ = {
 			isa = PBXGroup;
 			children = (
-				2240701F1ABEC74000039F9A /* Cat.py */,
 				224070201ABEC74000039F9A /* StringCheck.py */,
 			);
 			path = Python;
@@ -212,7 +209,7 @@
 		22406FE61ABEC61A00039F9A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = nako;
 				TargetAttributes = {
 					22406FED1ABEC61A00039F9A = {
@@ -251,7 +248,6 @@
 				224070221ABEC74000039F9A /* StringCheck.py in Resources */,
 				22343CE31AD7B9B00041FE6C /* openpyxl in Resources */,
 				22406FFC1ABEC61A00039F9A /* Images.xcassets in Resources */,
-				224070211ABEC74000039F9A /* Cat.py in Resources */,
 				22406FFF1ABEC61A00039F9A /* MainMenu.xib in Resources */,
 				224070181ABEC66400039F9A /* MasterViewController.xib in Resources */,
 			);
@@ -339,6 +335,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -402,6 +399,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = StringCheck/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nako.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -413,6 +411,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = StringCheck/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nako.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -432,6 +431,7 @@
 				);
 				INFOPLIST_FILE = StringCheckTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nako.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StringCheck.app/Contents/MacOS/StringCheck";
 			};
@@ -448,6 +448,7 @@
 				);
 				INFOPLIST_FILE = StringCheckTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.nako.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StringCheck.app/Contents/MacOS/StringCheck";
 			};

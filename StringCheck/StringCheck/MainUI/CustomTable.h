@@ -5,6 +5,7 @@
 //  Created by tilltue on 2015. 4. 2..
 //  Copyright (c) 2015년 nako. All rights reserved.
 //
+//  테이블 선택과 마우스 우클릭 context 메뉴를 사용하기 위한 이벤트처리용 custom table class
 
 #import <Cocoa/Cocoa.h>
 
